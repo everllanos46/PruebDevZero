@@ -21,30 +21,25 @@ namespace BLL
         {
             try
             {
-                var Respuesta = _TiendaContext.proveedores.Find(factura.FacturaId);
-                if (Respuesta == null)
+                foreach (var item in factura.DetallesFactura)
                 {
-                    foreach (var item in factura.DetallesFactura)
+                    if (_TiendaContext.productos.Find(item.ProductoId) == null) return new GuardarResponse("No se encuentra este producto", "ERROR");
+                    else
                     {
-                        if (_TiendaContext.productos.Find(item.ProductoId) == null) return new GuardarResponse("No se encuentra este producto", "ERROR");
-                        else
-                        {
-                            item.Producto = _TiendaContext.productos.Find(item.ProductoId);
-                            if (item.Producto.Cantidad < item.CantidadProducto) return new GuardarResponse("No hay suficientes unidades", "ERROR");
-                            item.Calcular();
-                            productoService.ActualizarCantidadProducto(item.ProductoId, item.CantidadProducto);
-                        }
+                        item.Producto = _TiendaContext.productos.Find(item.ProductoId);
+                        if (item.Producto.Cantidad < item.CantidadProducto) return new GuardarResponse("No hay suficientes unidades", "ERROR");
+                        item.Calcular();
+                        productoService.ActualizarCantidadProducto(item.ProductoId, item.CantidadProducto);
                     }
-                    if (_TiendaContext.usuarios.Find(factura.UsuarioId) == null) return new GuardarResponse("No se encuentra este usuario", "ERROR");
-                    factura.Interesado = _TiendaContext.interesados.Find(factura.InteresadoId);
-                    factura.CalcularTotalDescontado();
-                    factura.CalcularTotalIVA();
-                    factura.CalcularTotal();
-                    _TiendaContext.facturas.Add(factura);
-                    _TiendaContext.SaveChanges();
-                    return new GuardarResponse(factura);
                 }
-                else return new GuardarResponse("Ya se encuentra esta factura", "EXISTE");
+                if (_TiendaContext.usuarios.Find(factura.UsuarioId) == null) return new GuardarResponse("No se encuentra este usuario", "ERROR");
+                factura.Interesado = _TiendaContext.interesados.Find(factura.InteresadoId);
+                factura.CalcularTotalDescontado();
+                factura.CalcularTotalIVA();
+                factura.CalcularTotal();
+                _TiendaContext.facturas.Add(factura);
+                _TiendaContext.SaveChanges();
+                return new GuardarResponse(factura);
             }
             catch (Exception e)
             {
@@ -77,8 +72,10 @@ namespace BLL
                     _TiendaContext.facturaCompras.Add(facturaCompra);
                     _TiendaContext.SaveChanges();
                     return new GuardarCompraResponse(facturaCompra);
-                }else{
-                     return new GuardarCompraResponse("No se encuentra a el proveedor", "ERROR");
+                }
+                else
+                {
+                    return new GuardarCompraResponse("No se encuentra a el proveedor", "ERROR");
                 }
             }
             catch (Exception e)
