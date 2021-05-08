@@ -14,7 +14,6 @@ export class RegistrarProductoComponent implements OnInit {
   proveedores : Proveedor[]=[]
   proveedor : Proveedor = new Proveedor();
   producto : Producto;
-  a: string;
   selected: string;
   constructor(private proveedorService: ProveedorService, private productoService: ProductoServiceService) {
     this.producto = new Producto();
@@ -48,7 +47,7 @@ export class RegistrarProductoComponent implements OnInit {
   CambiarProveedor(event){
     const value = event.target.value;
     this.selected = value;
-    console.log(value);
+    this.proveedor=this.proveedores.find(p=>p.idProveedor==this.selected)
   }
 
 }

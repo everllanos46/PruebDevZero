@@ -1,0 +1,16 @@
+hr.solid {
+    border-top: 3px solid #bbb;
+  }
+
+  .my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        position: relative;
+        height: 200px;
+        overflow: auto;
+    }
+
+    

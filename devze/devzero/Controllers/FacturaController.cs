@@ -38,6 +38,24 @@ namespace devzero.Controllers
             return Ok(Response.Mensaje);
         }
 
+        [HttpPost("compra")]
+        public ActionResult<FacturaCompraViewModel> GuardarFacturaCompra(FacturaCompraInputModel facturaCompraInputModel){
+            FacturaCompra facturaCompra = MapearFacturaCompra(facturaCompraInputModel);
+            var Response = _service.GuardarFacturaCompra(facturaCompra);
+            if(Response.Error){
+                ModelState.AddModelError("Error al guardar a la factura", Response.Mensaje);
+                var detalleProblemas = new ValidationProblemDetails(ModelState);
+                if(Response.Estado.Equals("EXISTE")){
+                    detalleProblemas.Status=StatusCodes.Status302Found;
+                }
+                if(Response.Error.Equals("ERROR")){
+                    detalleProblemas.Status=StatusCodes.Status500InternalServerError;
+                }
+                return BadRequest(detalleProblemas);
+            }
+            return Ok(Response.Mensaje);
+        }
+
         [HttpGet]
         public ActionResult<FacturaViewModel> ConsultarFacturas( ){
             var Response = _service.ConsultarFacturas();
@@ -56,6 +74,15 @@ namespace devzero.Controllers
                 UsuarioId=facturaInputModel.UsuarioId,
                 DetallesFactura=MapearDetalles(facturaInputModel.DetallesFactura),
                 InteresadoId=facturaInputModel.InteresadoId
+            };
+            return factura;
+        }
+
+        private FacturaCompra MapearFacturaCompra(FacturaCompraInputModel facturaCompraInputModel){
+            var factura = new FacturaCompra{
+                UsuarioId=facturaCompraInputModel.UsuarioId,
+                DetallesFactura=MapearDetalles(facturaCompraInputModel.DetallesFactura),
+                ProveedorId=facturaCompraInputModel.ProveedorId
             };
             return factura;
         }

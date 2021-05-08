@@ -1,18 +1,14 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Producto } from '../models/producto';
 import { ProductoServiceService } from '../services/producto-service.service';
 
 @Component({
-  selector: 'app-factura-compra',
-  templateUrl: './factura-compra.component.html',
-  styleUrls: ['./factura-compra.component.css']
+  selector: 'app-factura-venta',
+  templateUrl: './factura-venta.component.html',
+  styleUrls: ['./factura-venta.component.css']
 })
-export class FacturaCompraComponent implements OnInit {
+export class FacturaVentaComponent implements OnInit {
   productos: Producto[]=[]
-  productoCard : Producto;
-  productosCarrito: Producto[]=[]
-  agregado: boolean=false;
   constructor(private productoService: ProductoServiceService) { }
 
   ngOnInit(): void {
@@ -25,17 +21,6 @@ export class FacturaCompraComponent implements OnInit {
         this.productos=resultado;
       }
      });
-  }
-
-  productoTabla(pos: number){
-    this.productoCard=this.productos[pos]
-    
-  }
-
-  agregarCarrito(){
-    this.agregado=true;
-    this.productosCarrito.push(this.productoCard)
-    
   }
 
 }

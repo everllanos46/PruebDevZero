@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegistrarClienteComponent } from './registrar-cliente/registrar-cliente.component';
 import { RegistrarProductoComponent } from './registrar-producto/registrar-producto.component';
 import { FacturaCompraComponent } from './factura-compra/factura-compra.component';
+import { FacturaVentaComponent } from './factura-venta/factura-venta.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { FacturaCompraComponent } from './factura-compra/factura-compra.componen
     ConsultarProductosComponent,
     RegistrarClienteComponent,
     RegistrarProductoComponent,
-    FacturaCompraComponent
+    FacturaCompraComponent,
+    FacturaVentaComponent
   ],
   imports: [
     BrowserModule,

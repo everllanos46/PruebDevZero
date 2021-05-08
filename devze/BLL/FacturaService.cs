@@ -57,7 +57,7 @@ namespace BLL
             try
             {
                 var Respuesta = _TiendaContext.proveedores.Find(facturaCompra.ProveedorId);
-                if (Respuesta == null)
+                if (Respuesta != null)
                 {
                     foreach (var item in facturaCompra.DetallesFactura)
                     {
@@ -77,8 +77,9 @@ namespace BLL
                     _TiendaContext.facturaCompras.Add(facturaCompra);
                     _TiendaContext.SaveChanges();
                     return new GuardarCompraResponse(facturaCompra);
+                }else{
+                     return new GuardarCompraResponse("No se encuentra a el proveedor", "ERROR");
                 }
-                else return new GuardarCompraResponse("No se encuentra a el proveedor", "ERROR");
             }
             catch (Exception e)
             {
